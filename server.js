@@ -17,18 +17,17 @@ var teamSchema = new mongoose.Schema({
   members: [{type: Schema.Types.ObjectId, ref: 'Members'}]
 });
 
-mongoose.model('Post', postSchema);
-var Post = mongoose.model('Post');
+mongoose.model('Team', teamSchema);
+var Team = mongoose.model('Team');
 
-var commentSchema = new mongoose.Schema({
-  _post: {type: Schema.Types.ObjectId, ref: 'Post'},
+var memberSchema = new mongoose.Schema({
+  _team : {type: Schema.Types.ObjectId, ref: 'Team'},
   name: String,
-  comment: String, 
   created_at: {type: Date, default: new Date}
 });
 
-mongoose.model('Comment', commentSchema);
-var Comment = mongoose.model('Comment');
+mongoose.model('Member', memberSchema);
+var Member = mongoose.model('Member');
 
 app.use(express.static(path.join(__dirname, "./static")));
 
@@ -36,72 +35,58 @@ app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-    Post.find({}, function(err, posts) {
-      Comment.find({}, function(err, comments){
-          var content = {
-              posts: posts,
-              comments: comments
-          }
-        for(i in content.posts){ 
-          console.log(content.posts[i].name);
-          console.log(content.posts[i].message);
-          for(j in content.comments){
-            console.log(content.comments[j]._post);
-            console.log(content.posts[i]._id);
-            if(content.comments[j]._post == content.posts[i]._id){
-              console.log(content.comments[j].name);  
-            }
-          }
+    Team.find({}, function(err, teams) {
+        for(i in content.teams){ 
+          console.log(content.teams[i].name);
         }
-        res.render('index', {content});         
-      });
+    res.render('index', {content});         
     });
 });
 
 //retrieve
-app.get('/posts/:id', function (req, res){
+app.get('/teams/:id', function (req, res){
 // the popuate method is what grabs all of the comments using their IDs stored in the 
 // comment property array of the post document!
-    Post.findOne({_id: req.params.id})
-        .populate('comments')
-  .exec(function(err, post) {
-    res.render('post', {post: post});
-        });
+    Team.findOne({_id: req.params.id})
+        .populate('members')
+        .exec(function(err, team) {
+        res.render('team', {team: team});
+    });
 });
 
 //post comments
-app.post('/comments/:id', function (req, res){
-  Post.findOne({_id: req.params.id}, function(err, post){
+app.post('/members/:id', function (req, res){
+  Team.findOne({_id: req.params.id}, function(err, team){
       // data from form on the front end
-      var comment = new Comment(req.body);
+      var member = new Member(req.body);
       //  set the reference like this:
-      comment._post = post._id;
-      post.comments.push(comment);
+      member._team = team._id;
+      team.members.push(member);
       // now save both to the DB
-      comment.save(function(err){
-          post.save(function(err){
+      member.save(function(err){
+          team.save(function(err){
       if(err) {
-            console.log('Error');
-     } else {
-            res.redirect('/');
-            }
-          });
+        console.log('Error');
+      } else {
+        res.redirect('/');
+      }
+      });
       });
   });
 });
 
 // route to add a post
-app.post('/post', function(req, res) {
+app.post('/team', function(req, res) {
 
   console.log("POST DATA", req.body);
 
-  var message = new Post({name: req.body.name, message: req.body.message});
+  var team = new Team({name: req.body.name});
 
-  message.save(function(err) {
+  team.save(function(err) {
     if(err) {
       console.log('something went wrong');
     } else { 
-      console.log('successfully added an info!');
+      console.log('successfully added an team!');
       res.redirect('/');
     }
   })
