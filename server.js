@@ -46,6 +46,7 @@ app.get('/users', function(req,res) {
   })
 })
 
+//retrieve a single user
 app.get('/user/:id', function(req,res) {
   Member.findOne({_id:req.params.id}, function(err, user){
     Team.find({}, function(err, teams) {
@@ -56,24 +57,25 @@ app.get('/user/:id', function(req,res) {
     })
   })
 })
-//retrieve
+
+//retrieve a team and its members
 app.get('/teams/:id', function (req, res){
     Team.findOne({_id: req.params.id})
         .exec(function(err, team) {
-    Member.find({_team: team.id}, function(err, members) {
-        var info ={};
-        info.team = team;
-        info.members = members;
-        console.log(info);
-        res.render('show', {info});
-    });
+        Member.find({_team: team.id}, function(err, members) {
+            var info ={};
+            info.team = team;
+            info.members = members;
+            console.log(info);
+            res.render('show', {info});
+        });
     });
 });
 
+//switch
 app.post('/switchTeams/:id', function(req,res){
   console.log(req.body.teamID +" Member ID: "+ req.params.id + ' ' +req.body.assoc);
   Team.update({_id: req.body.teamID}, {$pull: {members: req.params.id}}, {new:true}, function(err, record){
-    console.log("@ err ",err)
     console.log("@ record ", record)
     Member.update({_id: req.params.id}, {$set: {_team: req.body.assoc}}, {new:true}, function(err, record) {
       console.log("@ record ", record)
@@ -95,17 +97,18 @@ app.post('/members/:id', function (req, res){
       team.members.push(member);
       // now save both to the DB
       member.save(function(err){
-          team.save(function(err){
-      if(err) {
-        console.log('Error');
-      } else {
-        res.redirect('/teams/'+team._id);
-      }
-      });
+        team.save(function(err){
+          if(err) {
+            console.log('Error');
+          } else {
+            res.redirect('/teams/'+team._id);
+          }
+        });
       });
   });
 });
 
+//delete a member
 app.post('/delete/:id', function (req, res){
   Team.update({_id: req.body.teamID}, {$pull: {members: req.params.id}}, {new:true}, function(err, record){
     Member.remove({_id: req.params.id}, function(err){
@@ -114,6 +117,7 @@ app.post('/delete/:id', function (req, res){
   });
 });
 
+//delete a team
 app.post('/deleteTeam/:id', function (req, res){
     Team.remove({_id: req.params.id}, function(err){
         res.redirect('/');
@@ -122,11 +126,8 @@ app.post('/deleteTeam/:id', function (req, res){
 
 // route to add a post
 app.post('/team', function(req, res) {
-
   console.log("POST DATA", req.body);
-
   var team = new Team({name: req.body.name});
-
   team.save(function(err) {
     if(err) {
       console.log('something went wrong');

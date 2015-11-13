@@ -11,37 +11,37 @@
 <div class='container'>
 
 
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/">Team</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="/users">Members</a></li>
-      </ul>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Team</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="/users">Members</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<form action="/members/<%= info.team.id %>" method="post" class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="name">Name</label>
-    <input type="name" class="form-control" name='name' id="name" placeholder="Name">
-  </div>
-  <button type="submit" class="btn btn-default">Add Member</button>
-</form>
+  <form action="/members/<%= info.team.id %>" method="post" class="form-inline">
+    <div class="form-group">
+      <label class="sr-only" for="name">Name</label>
+      <input type="name" class="form-control" name='name' id="name" placeholder="Name">
+    </div>
+    <button type="submit" class="btn btn-default">Add Member</button>
+  </form>
 
-    <h1>Team name: <%= info.team.name %></h1>
-    <table class="table table-hover">
-    <tr><th>Team Members</th></tr>
-    	<% for(i in info.members) { %>
-    		<tr><td><%= info.members[i].name %></td></tr>
-    	<% } %>
-    	</table>
+  <h1><%= info.team.name %></h1>
+  <table class="table table-hover">
+  <tr><th>Team Members</th></tr>
+  	<% for(i in info.members) { %>
+  		<tr><td><a href='/user/<%= info.members[i].id %>'><%= info.members[i].name %></a></td></tr>
+  	<% } %>
+  	</table>
 
-   	<form action='/deleteTeam/<%= info.team.id %>' method='post'>
-        <button type='submit' class='btn btn-danger'> Delete Team </button>
-    </form>
+ 	<form action='/deleteTeam/<%= info.team.id %>' method='post'>
+      <button type='submit' class='btn btn-danger'> Delete Team </button>
+  </form>
 </div>
 </body>
 </html>
