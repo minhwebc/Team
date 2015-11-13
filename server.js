@@ -46,10 +46,14 @@ app.get('/', function(req, res) {
 //retrieve
 app.get('/teams/:id', function (req, res){
     Team.findOne({_id: req.params.id})
-        .populate('Members')
         .exec(function(err, team) {
-        console.log(team);
-        res.render('show', {team:team});
+    Member.find({_team: team.id}, function(err, members) {
+        var info ={};
+        info.team = team;
+        info.members = members;
+        console.log(info);
+        res.render('show', {info});
+    });
     });
 });
 

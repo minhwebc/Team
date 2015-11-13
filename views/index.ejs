@@ -8,7 +8,7 @@
     </head>
     <body>
 
-        <a href="/#">Team</a> | <a href="/students">Members</a>
+        <a href="/#">Team</a> | <a href="">Members</a>
 
 
         <form action="/team" method="post">
@@ -19,7 +19,7 @@
         <h2>Teams</h2>
 
         <% for(i in teams){ %>
-            Name: <a href="/teams/<%= teams[i].id %>"><%= teams[i].name %></a>
+            Name: <a href="/teams/<%= teams[i].id %>"><%= teams[i].name %></a><br>
         <% } %>
 
     </body>

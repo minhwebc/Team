@@ -9,15 +9,18 @@
 <body>
 
     <a href="/">Team</a> | <a href="/#">Members</a>
-    <form action="/members/<%= team.id %>" method="post">
+    <form action="/members/<%= info.team.id %>" method="post">
         <label for='member'>Name
     	<input type="text" name="name">
     	<input type="submit" value="Add Member">
     </form>
 
 
-    <p>Team name: <%= team.name %></p>
+    <p>Team name: <%= info.team.name %></p>
     <h2>Team Members</h2>
+    	<% for(i in info.members) { %>
+    		<p><%= info.members[i].name %></p>
+    	<% } %>
 
 </body>
 </html>
