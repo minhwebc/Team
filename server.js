@@ -36,13 +36,26 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
     Team.find({}, function(err, teams) {
-        for(i in teams){ 
-          console.log(teams[i].name);
-        }
     res.render('index', {teams});         
     });
 });
 
+app.get('/users', function(req,res) {
+  Member.find({}, function(err, users) {
+    res.render('users', {users});
+  })
+})
+
+app.get('/user/:id', function(req,res) {
+  Member.findOne({_id:req.params.id}, function(err, user){
+    Team.find({}, function(err, teams) {
+      var content = {};
+      content.user = user;
+      content.teams = teams;
+      res.render('user', {content});
+    })
+  })
+})
 //retrieve
 app.get('/teams/:id', function (req, res){
     Team.findOne({_id: req.params.id})
@@ -55,6 +68,21 @@ app.get('/teams/:id', function (req, res){
         res.render('show', {info});
     });
     });
+});
+
+app.post('/switchTeams/:id', function(req,res){
+  console.log(req.body.teamID +" Member ID: "+ req.params.id + ' ' +req.body.assoc);
+  Team.update({_id: req.body.teamID}, {$pull: {members: req.params.id}}, {new:true}, function(err, record){
+    console.log("@ err ",err)
+    console.log("@ record ", record)
+    Member.update({_id: req.params.id}, {$set: {_team: req.body.assoc}}, {new:true}, function(err, record) {
+      console.log("@ record ", record)
+      Team.update({_id: req.body.assoc}, {$push: {members: req.params.id}}, {new:true}, function(err,record){
+        console.log("@ record ", record)
+        res.redirect('/user/'+req.params.id);
+      });
+    });
+  });
 });
 
 //add members
@@ -77,6 +105,20 @@ app.post('/members/:id', function (req, res){
       });
   });
 });
+
+app.post('/delete/:id', function (req, res){
+  Team.update({_id: req.body.teamID}, {$pull: {members: req.params.id}}, {new:true}, function(err, record){
+    Member.remove({_id: req.params.id}, function(err){
+        res.redirect('/users');
+    });
+  });
+});
+
+app.post('/deleteTeam/:id', function (req, res){
+    Team.remove({_id: req.params.id}, function(err){
+        res.redirect('/');
+    });
+  });
 
 // route to add a post
 app.post('/team', function(req, res) {

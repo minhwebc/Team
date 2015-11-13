@@ -6,10 +6,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
     <script type ="text/javascript">
     </script>
+    <style>
+        form {
+            width: 30%;
+        }
+    </style>
 </head>
 <body>
 <div class='container'>
-
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -23,24 +27,26 @@
   </div>
 </nav>
 
-<form action="/members/<%= info.team.id %>" method="post" class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="name">Name</label>
-    <input type="name" class="form-control" name='name' id="name" placeholder="Name">
-  </div>
-  <button type="submit" class="btn btn-default">Add Member</button>
-</form>
 
-    <h1>Team name: <%= info.team.name %></h1>
-    <table class="table table-hover">
-    <tr><th>Team Members</th></tr>
-    	<% for(i in info.members) { %>
-    		<tr><td><%= info.members[i].name %></td></tr>
-    	<% } %>
-    	</table>
 
-   	<form action='/deleteTeam/<%= info.team.id %>' method='post'>
-        <button type='submit' class='btn btn-danger'> Delete Team </button>
+
+    <form action="/switchTeams/<%= content.user.id %>" method="post">
+        <label for='member'>Name: <%= content.user.name %></label>
+        <% for(i in content.teams){ 
+            if(content.teams[i].id == content.user._team) { %>
+                <p>Current Team: <%= content.teams[i].name %></p>
+        <% }} %>
+        <input type="hidden" name="teamID" value="<%= content.user._team %>">
+        <select class='form-control' id='member' name='assoc'>
+            <% for (i in content.teams) { %>
+                <option value="<%= content.teams[i].id %>"><%= content.teams[i].name %></option>
+            <% } %>
+        </select>
+        <br>
+    	<input class='btn btn-success' type="submit" value="Reassign">
+    </form>
+    <form action='/delete/<%= content.user.id %>' method='post'>
+        <button type='submit' class='btn btn-danger'> Delete User </button>
     </form>
 </div>
 </body>

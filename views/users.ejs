@@ -1,15 +1,20 @@
 <html>
 <head>
 <title>Team</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
     <script type ="text/javascript">
     </script>
+    <style>
+        .table {
+            width: 50%;
+        }
+    </style>
+</head>
 </head>
 <body>
 <div class='container'>
-
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -22,26 +27,14 @@
     </div>
   </div>
 </nav>
+    <h2>All Users</h2>
 
-<form action="/members/<%= info.team.id %>" method="post" class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="name">Name</label>
-    <input type="name" class="form-control" name='name' id="name" placeholder="Name">
-  </div>
-  <button type="submit" class="btn btn-default">Add Member</button>
-</form>
-
-    <h1>Team name: <%= info.team.name %></h1>
     <table class="table table-hover">
-    <tr><th>Team Members</th></tr>
-    	<% for(i in info.members) { %>
-    		<tr><td><%= info.members[i].name %></td></tr>
+    <tr><th>Name</th></tr>
+        <% for(i in users){ %>
+        	<tr><td><a href='user/<%= users[i].id %>'><%= users[i].name %></a></td></tr>
     	<% } %>
-    	</table>
-
-   	<form action='/deleteTeam/<%= info.team.id %>' method='post'>
-        <button type='submit' class='btn btn-danger'> Delete Team </button>
-    </form>
+    </table>
 </div>
 </body>
 </html>
