@@ -1,0 +1,31 @@
+<html>
+<head>
+<title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript">
+    </script>
+</head>
+<body>
+    <h2>The Dojo Message Board</h2>
+    <hr>
+    <form action="/post" method="post">
+    	Name: <input type="text" name="name">
+    	Message: <input type="text" name="message">
+    	<input type="submit" value="Post message">
+    </form>
+    <% for(i in content.posts){ %>
+    	<p>Name: <%= content.posts[i].name %></p>
+    	<p>Message: <%= content.posts[i].message %></p>
+    	<% for(j in content.comments){ %>
+    		<% if(content.comments[j]._post == content.posts[i].id){%>
+    	<p>Name: <%= content.comments[j].name %></p>
+    	<p>Comment: <%= content.comments[j].comment %></p>
+	<% }} %>
+		<form action="/comments/<%= content.posts[i]._id %>" method="post">
+	    	Name: <input type="text" name="name">
+	    	Comment: <input type="text" name="comment">
+	    	<input type="submit" value="Post comment">
+	    </form>
+	<% } %>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<html>
+	<head>
+	<title></title>
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	    <script type ="text/javascript">
+	    </script>
+	</head>
+	<body>
+	    <h2>Welcome to Dogojo</h2>
+	    	<p><%= dog._id %></p>
+	    	<p><%= dog.breed %></p>
+	    	<p><%= dog.color %></p>
+	    <a href="/dogs/edit/<%= dog._id %>">Edit my Dog</a>
+	    <a href="/dog/remove/<%= dog._id %>">Delete</a>
+	</body>
+</html>
