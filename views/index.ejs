@@ -1,31 +1,26 @@
 <html>
-<head>
-<title></title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script type ="text/javascript">
-    </script>
-</head>
-<body>
-    <h2>The Dojo Message Board</h2>
-    <hr>
-    <form action="/post" method="post">
-    	Name: <input type="text" name="name">
-    	Message: <input type="text" name="message">
-    	<input type="submit" value="Post message">
-    </form>
-    <% for(i in content.posts){ %>
-    	<p>Name: <%= content.posts[i].name %></p>
-    	<p>Message: <%= content.posts[i].message %></p>
-    	<% for(j in content.comments){ %>
-    		<% if(content.comments[j]._post == content.posts[i].id){%>
-    	<p>Name: <%= content.comments[j].name %></p>
-    	<p>Comment: <%= content.comments[j].comment %></p>
-	<% }} %>
-		<form action="/comments/<%= content.posts[i]._id %>" method="post">
-	    	Name: <input type="text" name="name">
-	    	Comment: <input type="text" name="comment">
-	    	<input type="submit" value="Post comment">
-	    </form>
-	<% } %>
-</body>
+    <head>
+    <title></title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type ="text/javascript">
+        </script>
+    </head>
+    <body>
+
+        <a href="/#">Team</a> | <a href="/students">Members</a>
+
+
+        <form action="/team" method="post">
+            <input type="text" name="name">
+            <input type="submit" value="Add Team">
+        </form>
+
+        <h2>Teams</h2>
+
+        <% for(i in teams){ %>
+            Name: <a href="/teams/<%= teams[i].id %>"><%= teams[i].name %></a>
+        <% } %>
+
+    </body>
 </html>

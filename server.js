@@ -26,8 +26,8 @@ var memberSchema = new mongoose.Schema({
   created_at: {type: Date, default: new Date}
 });
 
-mongoose.model('Member', memberSchema);
-var Member = mongoose.model('Member');
+mongoose.model('Members', memberSchema);
+var Member = mongoose.model('Members');
 
 app.use(express.static(path.join(__dirname, "./static")));
 
@@ -36,25 +36,24 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
     Team.find({}, function(err, teams) {
-        for(i in content.teams){ 
-          console.log(content.teams[i].name);
+        for(i in teams){ 
+          console.log(teams[i].name);
         }
-    res.render('index', {content});         
+    res.render('index', {teams});         
     });
 });
 
 //retrieve
 app.get('/teams/:id', function (req, res){
-// the popuate method is what grabs all of the comments using their IDs stored in the 
-// comment property array of the post document!
     Team.findOne({_id: req.params.id})
-        .populate('members')
+        .populate('Members')
         .exec(function(err, team) {
-        res.render('team', {team: team});
+        console.log(team);
+        res.render('show', {team:team});
     });
 });
 
-//post comments
+//add members
 app.post('/members/:id', function (req, res){
   Team.findOne({_id: req.params.id}, function(err, team){
       // data from form on the front end
@@ -68,7 +67,7 @@ app.post('/members/:id', function (req, res){
       if(err) {
         console.log('Error');
       } else {
-        res.redirect('/');
+        res.redirect('/teams/'+team._id);
       }
       });
       });
@@ -88,11 +87,11 @@ app.post('/team', function(req, res) {
     } else { 
       console.log('successfully added an team!');
       res.redirect('/');
-    }
+    } 
   })
 })
 
 // listen on 8000
-app.listen(8000, function() {
-	console.log("listening on port 8000");
+app.listen(7000, function() {
+	console.log("listening on port 7000");
 })

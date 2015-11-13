@@ -1,16 +1,23 @@
 <html>
-	<head>
-	<title></title>
-	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	    <script type ="text/javascript">
-	    </script>
-	</head>
-	<body>
-	    <h2>Welcome to Dogojo</h2>
-	    	<p><%= dog._id %></p>
-	    	<p><%= dog.breed %></p>
-	    	<p><%= dog.color %></p>
-	    <a href="/dogs/edit/<%= dog._id %>">Edit my Dog</a>
-	    <a href="/dog/remove/<%= dog._id %>">Delete</a>
-	</body>
+<head>
+<title>Team</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type ="text/javascript">
+    </script>
+</head>
+<body>
+
+    <a href="/">Team</a> | <a href="/#">Members</a>
+    <form action="/members/<%= team.id %>" method="post">
+        <label for='member'>Name
+    	<input type="text" name="name">
+    	<input type="submit" value="Add Member">
+    </form>
+
+
+    <p>Team name: <%= team.name %></p>
+    <h2>Team Members</h2>
+
+</body>
 </html>
